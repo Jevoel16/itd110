@@ -1,5 +1,18 @@
 const Student = require('../models/Student');
 
+// Function to classify income 
+const classification = (income) => {
+    if (income < 240000) return 'Poor';
+    if (income >= 240000 && income < 480000) return 'Lower Middle Class';
+    if (income >= 480000 && income < 960000) return 'Middle Class';
+    if (income >= 960000 && income < 1800000) return 'Upper Middle Class';
+    if (income >= 1800000 && income < 4500000) return 'Rich';
+    if (income >= 4500000 && income < 6000000) return 'Advanced Affluent';
+    if (income >= 6000000 && income < 24000000) return 'Mega Rich';
+    return 'Ultra Rich';
+
+}
+
 // Get all students
 const getStudents = async (req, res) => {
     try {
@@ -26,8 +39,9 @@ const getStudent = async (req, res) => {
 // Create student
 const createStudent = async (req, res) => {
     try {
-        const { name, email, course } = req.body;
-        const student = await Student.create({ name, email, course });
+        const { name, email, course, annual_household_income} = req.body;
+        const income_class = classification(annual_household_income);
+        const student = await Student.create({ name, email, course, annual_household_income, income_class });
         res.status(201).json(student);
     } catch (error) {
         res.status(400).json({ message: error.message });
@@ -37,10 +51,11 @@ const createStudent = async (req, res) => {
 // Update student
 const updateStudent = async (req, res) => {
     try {
-        const { name, email, course } = req.body;
+        const { name, email, course, annual_household_income } = req.body;
+        const income_class = classification(annual_household_income);
         const student = await Student.findByIdAndUpdate(
             req.params.id,
-            { name, email, course },
+            { name, email, course, annual_household_income, income_class },
             { new: true, runValidators: true }
         );
         if (!student) {
@@ -70,5 +85,6 @@ module.exports = {
     getStudent,
     createStudent,
     updateStudent,
-    deleteStudent
+    deleteStudent,
+    classification
 };

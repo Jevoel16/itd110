@@ -5,7 +5,7 @@ const {
     getStudent,
     createStudent,
     updateStudent,
-    deleteStudent
+    deleteStudent,
 } = require('../controllers/studentController');
 
 router.route('/')

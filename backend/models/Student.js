@@ -17,6 +17,13 @@ const studentSchema = new mongoose.Schema({
         type: String,
         required: [true, 'Course is required'],
         trim: true
+    },
+    annual_household_income: {
+        type: Number,
+        required: [true, 'Annual Household Income is required']
+    },
+    income_class: {
+        type: String
     }
 }, {
     timestamps: true
